@@ -8,11 +8,11 @@ read_globals = {
     "wipe", "print", "issecretvalue",
 
     -- Frames, timers, client
-    "CreateFrame", "C_Timer", "GetLocale", "TargetFrame", "C_NamePlate",
+    "CreateFrame", "C_Timer", "GetTime", "GetLocale", "TargetFrame", "C_NamePlate", "STANDARD_TEXT_FONT",
 
     -- Units, spells, auras
     "UnitClass", "UnitExists", "UnitIsDeadOrGhost", "UnitIsUnit", "UnitIsPlayer", "UnitCanAttack",
-    "UnitAffectingCombat", "UnitCreatureType", "IsStealthed", "C_Spell", "C_UnitAuras",
+    "UnitAffectingCombat", "UnitCreatureType", "IsStealthed", "C_Spell", "C_UnitAuras", "C_Secrets",
 
     -- Settings panel
     "Settings", "CreateSettingsListSectionHeaderInitializer", "MinimalSliderWithSteppersMixin",

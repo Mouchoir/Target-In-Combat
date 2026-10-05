@@ -15,6 +15,7 @@ local STATE = {
 Rules.STATE = STATE
 
 local SAP_SPELL_ID = 6770 -- rank 1; range and usability checks by name follow the best rank known
+local sapIds = { [6770] = true, [2070] = true, [11297] = true }
 local HUMANOID = 7         -- UnitCreatureType id, locale independent
 
 -- Auras that make a player unsappable. On Classic content Sap only hits humanoids,
@@ -69,16 +70,47 @@ function Rules:SapModeActive()
     return isRogue and ns.db.sapMode and sapName ~= nil and C_Spell.GetSpellInfo(sapName) ~= nil
 end
 
+-- Reads aura i, or returns nil, true when the client keeps it secret. While the player
+-- is in combat Forever restricts auras, and querying a secret one raises an error
+-- instead of returning a secret value, so ask first.
+local function ReadAura(unit, i, filter)
+    if C_Secrets and C_Secrets.ShouldUnitAuraIndexBeSecret
+        and C_Secrets.ShouldUnitAuraIndexBeSecret(unit, i, filter) then
+        return nil, true
+    end
+    local ok, aura = pcall(C_UnitAuras.GetAuraDataByIndex, unit, i, filter)
+    if not ok or IsSecret(aura) then return nil, true end
+    return aura, false
+end
+
 local function HasBlockingAura(unit)
     for i = 1, 40 do
-        local aura = C_UnitAuras.GetAuraDataByIndex(unit, i, "HELPFUL")
+        local aura, secret = ReadAura(unit, i, "HELPFUL")
+        if secret then return nil end
         if not aura then return false end
-        if IsSecret(aura) then return nil end
         local id, name = aura.spellId, aura.name
         if IsSecret(id) or IsSecret(name) then return nil end
         if blockingIds[id] or blockingNames[name] then return true end
     end
     return false
+end
+
+-- Our own Sap on the unit: expiration time and duration from the real debuff,
+-- or nil when there is none or the client hides it.
+local function FindMySap(unit)
+    for i = 1, 40 do
+        local aura, secret = ReadAura(unit, i, "HARMFUL|PLAYER")
+        if secret or not aura then return nil end
+        local id, name = aura.spellId, aura.name
+        if not IsSecret(id) and not IsSecret(name) and (sapIds[id] or name == sapName) then
+            local expires, duration = aura.expirationTime, aura.duration
+            if IsSecret(expires) or IsSecret(duration) or not duration or duration <= 0 then
+                return nil
+            end
+            return expires, duration
+        end
+    end
+    return nil
 end
 
 -- Returns true, false, or nil when the client hides the answer (secret values).
@@ -112,6 +144,7 @@ function Rules:Wanted(unit, onNamePlate)
     return db.friendly
 end
 
+-- Returns the state, plus the expiration time and duration of our Sap on the unit if any.
 function Rules:GetState(unit, onNamePlate)
     if not self:Wanted(unit, onNamePlate) then return STATE.NONE end
 
@@ -120,6 +153,10 @@ function Rules:GetState(unit, onNamePlate)
     if inCombat then return STATE.COMBAT end
 
     if self:SapModeActive() and UnitCanAttack("player", unit) then
+        local expires, duration = FindMySap(unit)
+        if expires then
+            return CanSapNow(unit) and STATE.SAP_READY or STATE.SAP_FAR, expires, duration
+        end
         local sappable = CanBeSapped(unit)
         if sappable == false then return STATE.SAP_NO end
         if sappable then

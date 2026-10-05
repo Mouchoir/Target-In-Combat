@@ -19,6 +19,8 @@ On hostile units out of combat, the combat icon becomes the Sap icon:
 | Grey | Sappable, but out of range or you are not stealthed |
 | Grey with a red X | Cannot be sapped: not humanoid, shapeshifted (druid forms, Ghost Wolf) or immune (Divine Shield, Ice Block, Blessing of Protection) |
 
+Once you have sapped a unit, its icon shows the time left on your Sap, as a clock sweep and in seconds, whether it is grey or colored. The time comes from the real debuff, so it is exact, and it disappears as soon as Sap breaks.
+
 Range comes from the game's own Sap range check, so any range bonus is taken into account.
 
 ## Options

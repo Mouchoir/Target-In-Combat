@@ -37,11 +37,40 @@ local function CreateIcon(parent)
     flip:SetFlipBookFrames(42)
     flip:SetDuration(1.5)
 
+    -- Time left on our Sap: clock sweep plus seconds written on top.
+    icon.cd = CreateFrame("Cooldown", nil, icon, "CooldownFrameTemplate")
+    icon.cd:SetAllPoints()
+    icon.cd:SetHideCountdownNumbers(true)
+    icon.cd:SetDrawEdge(false)
+    icon.cd:Hide()
+    icon.timer = icon.cd:CreateFontString(nil, "OVERLAY")
+    icon.timer:SetPoint("CENTER", 0, 0)
+    icon.timer:SetTextColor(1, 0.9, 0.2)
+
     icon:Hide()
     return icon
 end
 
-local function Apply(icon, state)
+local function ShowSapTimer(icon, expires, duration)
+    if not expires then
+        if icon.cdExpires then
+            icon.cdExpires = nil
+            icon.cd:Clear()
+            icon.cd:Hide()
+        end
+        return
+    end
+    if icon.cdExpires ~= expires then
+        icon.cdExpires = expires
+        icon.cd:Show()
+        icon.cd:SetCooldown(expires - duration, duration)
+    end
+    local left = expires - GetTime()
+    icon.timer:SetText(left > 0 and tostring(math.ceil(left)) or "")
+end
+
+local function Apply(icon, state, expires, duration)
+    ShowSapTimer(icon, state ~= STATE.NONE and expires or nil, duration)
     if state == STATE.NONE then
         icon:Hide()
         return
@@ -117,9 +146,20 @@ local function AnchorPlateIcon(icon)
 end
 
 local function RefreshPlate(unit, icon)
-    local state = ns.db.nameplates and ns.Rules:GetState(unit, true) or STATE.NONE
+    local state, expires, duration = STATE.NONE, nil, nil
+    if ns.db.nameplates then
+        state, expires, duration = ns.Rules:GetState(unit, true)
+    end
     if state ~= STATE.NONE then AnchorPlateIcon(icon) end
-    Apply(icon, state)
+    Apply(icon, state, expires, duration)
+end
+
+local function RefreshTarget()
+    local state, expires, duration = STATE.NONE, nil, nil
+    if ns.db.targetFrame then
+        state, expires, duration = ns.Rules:GetState("target", false)
+    end
+    Apply(targetIcon, state, expires, duration)
 end
 
 local targetPortrait
@@ -145,11 +185,16 @@ function Display:ApplyTargetPosition()
         radius * math.sin(angle), radius * math.cos(angle))
 end
 
+local function Resize(icon, size)
+    icon:SetSize(size, size)
+    icon.timer:SetFont(STANDARD_TEXT_FONT, math.max(8, math.floor(size * 0.6)), "OUTLINE")
+end
+
 function Display:ApplySize()
     local size = ns.db.iconSize
-    if targetIcon then targetIcon:SetSize(size, size) end
-    for _, icon in pairs(plateIcons) do icon:SetSize(size, size) end
-    for _, icon in ipairs(pool) do icon:SetSize(size, size) end
+    if targetIcon then Resize(targetIcon, size) end
+    for _, icon in pairs(plateIcons) do Resize(icon, size) end
+    for _, icon in ipairs(pool) do Resize(icon, size) end
 end
 
 function Display:AddNamePlate(unit)
@@ -158,7 +203,7 @@ function Display:AddNamePlate(unit)
     local icon = plateIcons[unit] or table.remove(pool) or CreateIcon(plate)
     icon:SetParent(plate)
     icon:SetFrameStrata("HIGH")
-    icon:SetSize(ns.db.iconSize, ns.db.iconSize)
+    Resize(icon, ns.db.iconSize)
     icon.plate = plate
     icon.anchorMode = nil
     plateIcons[unit] = icon
@@ -180,7 +225,7 @@ function Display:RefreshUnit(unit)
     local icon = plateIcons[unit]
     if icon then RefreshPlate(unit, icon) end
     if targetIcon and (unit == "target" or UnitIsUnit(unit, "target")) then
-        Apply(targetIcon, ns.db.targetFrame and ns.Rules:GetState("target", false) or STATE.NONE)
+        RefreshTarget()
     end
 end
 
@@ -189,6 +234,6 @@ function Display:RefreshAll()
         RefreshPlate(unit, icon)
     end
     if targetIcon then
-        Apply(targetIcon, ns.db.targetFrame and ns.Rules:GetState("target", false) or STATE.NONE)
+        RefreshTarget()
     end
 end
