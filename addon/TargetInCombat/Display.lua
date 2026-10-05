@@ -87,16 +87,39 @@ local function Apply(icon, state)
     icon:Show()
 end
 
--- Anchor on the health bar when we can find one (Blizzard, then Plater), else on the plate.
-local function PlateAnchor(plate)
+-- Left of the health bar (Forever puts the level badge on the right). Friendly players
+-- can be shown as a name only: the bar is hidden then, so sit left of the name text.
+local function AnchorPlateIcon(icon)
+    local plate = icon.plate
     local uf = plate.UnitFrame
-    if uf and uf.HealthBarsContainer and uf.HealthBarsContainer.healthBar then
-        return uf.HealthBarsContainer.healthBar
+    local mode, anchor
+    if uf and uf.IsShowOnlyName and uf:IsShowOnlyName() and uf.name then
+        mode, anchor = "name", uf.name
+    elseif uf and uf.HealthBarsContainer and uf.HealthBarsContainer.healthBar then
+        mode, anchor = "bar", uf.HealthBarsContainer.healthBar
+    elseif plate.unitFrame and plate.unitFrame.healthBar then -- Plater
+        mode, anchor = "bar", plate.unitFrame.healthBar
+    else
+        mode, anchor = "plate", plate
     end
-    if plate.unitFrame and plate.unitFrame.healthBar then
-        return plate.unitFrame.healthBar
+
+    -- The name string can be wider than its text, so measure the text itself.
+    local offset = mode == "name" and anchor:GetStringWidth() or 0
+    if icon.anchorMode == mode and icon.anchorOffset == offset then return end
+    icon.anchorMode, icon.anchorOffset = mode, offset
+
+    icon:ClearAllPoints()
+    if mode == "name" then
+        icon:SetPoint("RIGHT", anchor, "CENTER", -offset / 2 - 3, 0)
+    else
+        icon:SetPoint("RIGHT", anchor, "LEFT", -3, 0)
     end
-    return plate
+end
+
+local function RefreshPlate(unit, icon)
+    local state = ns.db.nameplates and ns.Rules:GetState(unit, true) or STATE.NONE
+    if state ~= STATE.NONE then AnchorPlateIcon(icon) end
+    Apply(icon, state)
 end
 
 local targetPortrait
@@ -136,9 +159,8 @@ function Display:AddNamePlate(unit)
     icon:SetParent(plate)
     icon:SetFrameStrata("HIGH")
     icon:SetSize(ns.db.iconSize, ns.db.iconSize)
-    icon:ClearAllPoints()
-    -- Left of the bar: Forever puts the level badge on the right.
-    icon:SetPoint("RIGHT", PlateAnchor(plate), "LEFT", -3, 0)
+    icon.plate = plate
+    icon.anchorMode = nil
     plateIcons[unit] = icon
     self:RefreshUnit(unit)
 end
@@ -148,6 +170,7 @@ function Display:RemoveNamePlate(unit)
     if not icon then return end
     icon:Hide()
     icon:ClearAllPoints()
+    icon.plate = nil
     plateIcons[unit] = nil
     pool[#pool + 1] = icon
 end
@@ -155,9 +178,7 @@ end
 function Display:RefreshUnit(unit)
     if not unit then return end
     local icon = plateIcons[unit]
-    if icon then
-        Apply(icon, ns.db.nameplates and ns.Rules:GetState(unit, true) or STATE.NONE)
-    end
+    if icon then RefreshPlate(unit, icon) end
     if targetIcon and (unit == "target" or UnitIsUnit(unit, "target")) then
         Apply(targetIcon, ns.db.targetFrame and ns.Rules:GetState("target", false) or STATE.NONE)
     end
@@ -165,7 +186,7 @@ end
 
 function Display:RefreshAll()
     for unit, icon in pairs(plateIcons) do
-        Apply(icon, ns.db.nameplates and ns.Rules:GetState(unit, true) or STATE.NONE)
+        RefreshPlate(unit, icon)
     end
     if targetIcon then
         Apply(targetIcon, ns.db.targetFrame and ns.Rules:GetState("target", false) or STATE.NONE)
