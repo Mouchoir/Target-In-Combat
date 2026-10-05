@@ -2,6 +2,8 @@
 
 A WoW Forever addon that shows whether a unit is in combat, on nameplates and on the target portrait. Rogues can turn on a Sap mode that tells at a glance who can be sapped, and how long their Sap has left.
 
+Download on [CurseForge](https://www.curseforge.com/wow/addons/target-in-combat-can-i-sap-it).
+
 Built for world PvP: an enemy out of combat can mount, drink, stealth or resurrect. An enemy in combat cannot.
 
 ## Screenshots
