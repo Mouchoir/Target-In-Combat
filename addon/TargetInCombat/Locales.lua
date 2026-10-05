@@ -7,10 +7,12 @@ local L = {
 
     OPT_DISPLAY = "Display",
     OPT_NAMEPLATES = "Show on nameplates",
-    OPT_NAMEPLATES_TT = "Adds the icon to the right of each nameplate.",
+    OPT_NAMEPLATES_TT = "Adds the icon to the left of each nameplate.",
     OPT_TARGET = "Show next to the target portrait",
-    OPT_TARGET_TT = "Adds the icon on the top left of the target portrait.",
+    OPT_TARGET_TT = "Adds the icon on the ring of the target portrait.",
     OPT_ICON_SIZE = "Icon size",
+    OPT_TARGET_ANGLE = "Position around the target portrait",
+    OPT_TARGET_ANGLE_TT = "Moves the icon around the round portrait. 0 is the top, 90 the right, 180 the bottom, 270 the left.",
 
     OPT_UNITS = "Units",
     OPT_ENEMY_PLAYERS = "Enemy players",
@@ -31,10 +33,12 @@ local locales = {
 
         OPT_DISPLAY = "Affichage",
         OPT_NAMEPLATES = "Afficher sur les barres de nom",
-        OPT_NAMEPLATES_TT = "Ajoute l'icône à droite de chaque barre de nom.",
+        OPT_NAMEPLATES_TT = "Ajoute l'icône à gauche de chaque barre de nom.",
         OPT_TARGET = "Afficher à côté du portrait de la cible",
-        OPT_TARGET_TT = "Ajoute l'icône en haut à gauche du portrait de la cible.",
+        OPT_TARGET_TT = "Ajoute l'icône sur le contour du portrait de la cible.",
         OPT_ICON_SIZE = "Taille de l'icône",
+        OPT_TARGET_ANGLE = "Position autour du portrait de la cible",
+        OPT_TARGET_ANGLE_TT = "Fait tourner l'icône autour du portrait rond. 0 en haut, 90 à droite, 180 en bas, 270 à gauche.",
 
         OPT_UNITS = "Unités",
         OPT_ENEMY_PLAYERS = "Joueurs ennemis",

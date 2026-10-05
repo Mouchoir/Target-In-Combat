@@ -4,7 +4,7 @@ A WoW Forever addon that shows whether a unit is in combat, on nameplates and ne
 
 ## Combat mode (every class)
 
-- An icon on each nameplate and on the top left of the target portrait when the unit is in combat.
+- A red crossed-swords icon on the left of each nameplate and on the ring of the target portrait when the unit is in combat. A slider moves it around the portrait.
 - No icon means out of combat: the player can mount, drink, stealth or resurrect.
 - Option: show a faded icon on units out of combat instead of nothing.
 - Filters: enemy players (on by default), enemy NPCs, friendly units.

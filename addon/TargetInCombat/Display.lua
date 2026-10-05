@@ -29,11 +29,17 @@ local function Apply(icon, state)
 
     local tex = icon.tex
     if state == STATE.COMBAT or state == STATE.PEACE then
+        -- The atlas is silver: tint it red in combat so it never reads as "greyed out".
         tex:SetAtlas(COMBAT_ATLAS)
         tex:SetTexCoord(0, 1, 0, 1)
-        tex:SetDesaturated(state == STATE.PEACE)
-        tex:SetVertexColor(1, 1, 1)
-        icon:SetAlpha(state == STATE.PEACE and 0.4 or 1)
+        tex:SetDesaturated(true)
+        if state == STATE.COMBAT then
+            tex:SetVertexColor(1, 0.15, 0.15)
+            icon:SetAlpha(1)
+        else
+            tex:SetVertexColor(1, 1, 1)
+            icon:SetAlpha(0.4)
+        end
     else
         tex:SetTexture(SAP_ICON)
         tex:SetTexCoord(0.08, 0.92, 0.08, 0.92)
@@ -66,14 +72,27 @@ local function PlateAnchor(plate)
     return plate
 end
 
+local targetPortrait
+
 function Display:Init()
     local container = TargetFrame and TargetFrame.TargetFrameContainer
-    local portrait = container and container.Portrait
-    if portrait then
+    targetPortrait = container and container.Portrait
+    if targetPortrait then
         targetIcon = CreateIcon(TargetFrame)
-        targetIcon:SetPoint("CENTER", portrait, "TOPLEFT", 6, -6)
+        self:ApplyTargetPosition()
     end
     self:ApplySize()
+end
+
+-- The icon sits on the ring around the round portrait. Angle in degrees,
+-- 0 at the top, growing clockwise.
+function Display:ApplyTargetPosition()
+    if not targetIcon then return end
+    local radius = targetPortrait:GetWidth() / 2 + 2
+    local angle = math.rad(ns.db.targetAngle)
+    targetIcon:ClearAllPoints()
+    targetIcon:SetPoint("CENTER", targetPortrait, "CENTER",
+        radius * math.sin(angle), radius * math.cos(angle))
 end
 
 function Display:ApplySize()
@@ -91,7 +110,8 @@ function Display:AddNamePlate(unit)
     icon:SetFrameStrata("HIGH")
     icon:SetSize(ns.db.iconSize, ns.db.iconSize)
     icon:ClearAllPoints()
-    icon:SetPoint("LEFT", PlateAnchor(plate), "RIGHT", 3, 0)
+    -- Left of the bar: Forever puts the level badge on the right.
+    icon:SetPoint("RIGHT", PlateAnchor(plate), "LEFT", -3, 0)
     plateIcons[unit] = icon
     self:RefreshUnit(unit)
 end

@@ -5,6 +5,7 @@ local DEFAULTS = {
     nameplates = true,
     targetFrame = true,
     iconSize = 20,
+    targetAngle = 315,
     enemyPlayers = true,
     enemyNPCs = false,
     friendly = false,

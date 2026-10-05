@@ -29,6 +29,13 @@ function Options:Init()
     sliderOptions:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right)
     Settings.CreateSlider(category, size, sliderOptions)
 
+    local angle = Settings.RegisterAddOnSetting(category, "TIC_targetAngle", "targetAngle", ns.db,
+        "number", L.OPT_TARGET_ANGLE, ns.DEFAULTS.targetAngle)
+    angle:SetValueChangedCallback(function() ns.Display:ApplyTargetPosition() end)
+    local angleOptions = Settings.CreateSliderOptions(0, 355, 5)
+    angleOptions:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right)
+    Settings.CreateSlider(category, angle, angleOptions, L.OPT_TARGET_ANGLE_TT)
+
     layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L.OPT_UNITS))
     AddCheckbox("enemyPlayers", L.OPT_ENEMY_PLAYERS)
     AddCheckbox("enemyNPCs", L.OPT_ENEMY_NPCS)
