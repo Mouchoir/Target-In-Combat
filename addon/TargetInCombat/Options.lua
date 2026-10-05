@@ -37,10 +37,17 @@ local function AddSimulation()
     local parent = Settings.CreateCheckbox(category, enabled, L.OPT_SIM_ENABLE_TT)
     local function IsOn() return sim.enabled end
 
-    local combat = Settings.RegisterProxySetting(category, "TIC_simCombat", "number",
+    -- Combat and Sap exclude each other: picking one resets the other, through the
+    -- setting so the dropdown on screen follows.
+    local combat, sap
+    combat = Settings.RegisterProxySetting(category, "TIC_simCombat", "number",
         L.OPT_SIM_COMBAT, 0,
         function() return sim.combat end,
-        function(value) sim.combat = value; Refresh() end)
+        function(value)
+            sim.combat = value
+            if value ~= 0 and sim.sap ~= 0 then sap:SetValue(0) end
+            Refresh()
+        end)
     Settings.CreateDropdown(category, combat, function()
         local c = Settings.CreateControlTextContainer()
         c:Add(0, L.SIM_OUT_OF_COMBAT)
@@ -48,10 +55,14 @@ local function AddSimulation()
         return c:GetData()
     end, L.OPT_SIM_COMBAT_TT):SetParentInitializer(parent, IsOn)
 
-    local sap = Settings.RegisterProxySetting(category, "TIC_simSap", "number",
+    sap = Settings.RegisterProxySetting(category, "TIC_simSap", "number",
         L.OPT_SIM_SAP, 0,
         function() return sim.sap end,
-        function(value) sim.sap = value; Refresh() end)
+        function(value)
+            sim.sap = value
+            if value ~= 0 and sim.combat ~= 0 then combat:SetValue(0) end
+            Refresh()
+        end)
     Settings.CreateDropdown(category, sap, function()
         local c = Settings.CreateControlTextContainer()
         c:Add(0, L.SIM_SAP_NONE)
