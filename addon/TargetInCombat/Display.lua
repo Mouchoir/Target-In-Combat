@@ -8,6 +8,7 @@ local STATE = ns.Rules.STATE
 local COMBAT_ATLAS = "UI-HUD-UnitFrame-Player-CombatIcon"
 local SAP_ICON = "Interface\\Icons\\Ability_Sap"
 local CROSS_ATLAS = "UI-LFG-DeclineMark" -- the red X of the ready check
+local REST_ATLAS = "UI-HUD-UnitFrame-Player-Rest-Flipbook" -- the player frame's Zzz, 7x6 frames
 
 local plateIcons = {}   -- unit token -> icon frame
 local pool = {}         -- released nameplate icons
@@ -22,6 +23,20 @@ local function CreateIcon(parent)
     icon.cross:SetAtlas(CROSS_ATLAS)
     icon.cross:SetAllPoints()
     icon.cross:Hide()
+
+    icon.zzz = icon:CreateTexture(nil, "OVERLAY")
+    icon.zzz:SetAtlas(REST_ATLAS)
+    icon.zzz:SetAllPoints()
+    icon.zzz:Hide()
+    icon.zzzAnim = icon:CreateAnimationGroup()
+    icon.zzzAnim:SetLooping("REPEAT")
+    local flip = icon.zzzAnim:CreateAnimation("FlipBook")
+    flip:SetTarget(icon.zzz)
+    flip:SetFlipBookRows(7)
+    flip:SetFlipBookColumns(6)
+    flip:SetFlipBookFrames(42)
+    flip:SetDuration(1.5)
+
     icon:Hide()
     return icon
 end
@@ -33,19 +48,25 @@ local function Apply(icon, state)
     end
 
     local tex = icon.tex
+    local resting = state == STATE.PEACE
     icon.cross:SetShown(state == STATE.SAP_NO)
-    if state == STATE.COMBAT or state == STATE.PEACE then
-        -- The atlas is silver: tint it red in combat so it never reads as "greyed out".
+    icon.zzz:SetShown(resting)
+    tex:SetShown(not resting)
+    if resting then
+        if not icon.zzzAnim:IsPlaying() then icon.zzzAnim:Play() end
+    else
+        icon.zzzAnim:Stop()
+    end
+
+    if resting then
+        icon:SetAlpha(1)
+    elseif state == STATE.COMBAT then
+        -- The atlas is silver: tint it red so it never reads as "greyed out".
         tex:SetAtlas(COMBAT_ATLAS)
         tex:SetTexCoord(0, 1, 0, 1)
         tex:SetDesaturated(true)
-        if state == STATE.COMBAT then
-            tex:SetVertexColor(1, 0.15, 0.15)
-            icon:SetAlpha(1)
-        else
-            tex:SetVertexColor(1, 1, 1)
-            icon:SetAlpha(0.4)
-        end
+        tex:SetVertexColor(1, 0.15, 0.15)
+        icon:SetAlpha(1)
     else
         tex:SetTexture(SAP_ICON)
         tex:SetTexCoord(0.08, 0.92, 0.08, 0.92)

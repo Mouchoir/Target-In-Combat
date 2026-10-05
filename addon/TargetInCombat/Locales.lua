@@ -19,7 +19,7 @@ local L = {
     OPT_ENEMY_NPCS = "Enemy NPCs",
     OPT_FRIENDLY = "Friendly units",
     OPT_OUT_OF_COMBAT = "Also show units out of combat",
-    OPT_OUT_OF_COMBAT_TT = "Shows a faded icon on units out of combat instead of nothing.",
+    OPT_OUT_OF_COMBAT_TT = "Shows a Zzz icon on units out of combat instead of nothing.",
 
     OPT_ROGUE = "Rogue",
     OPT_SAP = "Sap mode",
@@ -45,7 +45,7 @@ local locales = {
         OPT_ENEMY_NPCS = "PNJ ennemis",
         OPT_FRIENDLY = "Unités amicales",
         OPT_OUT_OF_COMBAT = "Afficher aussi les unités hors combat",
-        OPT_OUT_OF_COMBAT_TT = "Affiche une icône pâle sur les unités hors combat au lieu de rien.",
+        OPT_OUT_OF_COMBAT_TT = "Affiche une icône Zzz sur les unités hors combat au lieu de rien.",
 
         OPT_ROGUE = "Voleur",
         OPT_SAP = "Mode Assommer",
