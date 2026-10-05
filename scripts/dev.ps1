@@ -4,13 +4,13 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-$addonName = 'IsTargetInCombat'
+$addonName = 'TargetInCombat'
 $projectRoot = Resolve-Path (Join-Path $PSScriptRoot '..')
 $source = Join-Path $projectRoot "addon\$addonName"
 
 # Personal machine paths never live in source control. Provide yours via:
 #  - the -WowAddOnsPath parameter (one or more paths),
-#  - the ITIC_WOW_ADDONS_PATH environment variable (';'-separated), or
+#  - the TIC_WOW_ADDONS_PATH environment variable (';'-separated), or
 #  - a local scripts\dev.local.ps1 file (gitignored) that sets $WowAddOnsPaths
 #    (array) or $WowAddOnsPath (single string).
 $targets = @()
@@ -25,8 +25,8 @@ if (-not $targets) {
     }
 }
 
-if (-not $targets -and $env:ITIC_WOW_ADDONS_PATH) {
-    $targets = $env:ITIC_WOW_ADDONS_PATH -split ';' | Where-Object { $_ }
+if (-not $targets -and $env:TIC_WOW_ADDONS_PATH) {
+    $targets = $env:TIC_WOW_ADDONS_PATH -split ';' | Where-Object { $_ }
 }
 
 # WoW Forever runs from the _classic_beta_ folder during its beta.
@@ -38,7 +38,7 @@ if (-not $targets) {
 }
 
 if (-not $targets) {
-    throw "No WoW AddOns folder found. Pass -WowAddOnsPath, set ITIC_WOW_ADDONS_PATH, or create scripts\dev.local.ps1 setting `$WowAddOnsPaths."
+    throw "No WoW AddOns folder found. Pass -WowAddOnsPath, set TIC_WOW_ADDONS_PATH, or create scripts\dev.local.ps1 setting `$WowAddOnsPaths."
 }
 
 if (-not (Test-Path -LiteralPath (Join-Path $source "$addonName.toc"))) {

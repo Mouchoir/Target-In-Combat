@@ -20,5 +20,5 @@ read_globals = {
 
 globals = {
     -- SavedVariable and slash handlers (globals WoW reads/writes)
-    "IsTargetInCombatDB", "SLASH_ISTARGETINCOMBAT1", "SlashCmdList",
+    "TargetInCombatDB", "SLASH_TARGETINCOMBAT1", "SlashCmdList",
 }

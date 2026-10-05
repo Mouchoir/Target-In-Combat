@@ -18,15 +18,15 @@ ns.DEFAULTS = DEFAULTS
 local TICK = 0.2
 
 local function LoadDB()
-    if type(IsTargetInCombatDB) ~= "table" then
-        IsTargetInCombatDB = {}
+    if type(TargetInCombatDB) ~= "table" then
+        TargetInCombatDB = {}
     end
     for key, value in pairs(DEFAULTS) do
-        if IsTargetInCombatDB[key] == nil then
-            IsTargetInCombatDB[key] = value
+        if TargetInCombatDB[key] == nil then
+            TargetInCombatDB[key] = value
         end
     end
-    ns.db = IsTargetInCombatDB
+    ns.db = TargetInCombatDB
 end
 
 local frame = CreateFrame("Frame")
@@ -65,7 +65,7 @@ frame:SetScript("OnEvent", function(_, event, arg1)
     end
 end)
 
-SLASH_ISTARGETINCOMBAT1 = "/itic"
-SlashCmdList.ISTARGETINCOMBAT = function()
+SLASH_TARGETINCOMBAT1 = "/tic"
+SlashCmdList.TARGETINCOMBAT = function()
     ns.Options:Open()
 end

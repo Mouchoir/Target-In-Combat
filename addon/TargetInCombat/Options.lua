@@ -8,7 +8,7 @@ ns.Options = Options
 local category
 
 local function AddCheckbox(key, label, tooltip)
-    local setting = Settings.RegisterAddOnSetting(category, "ITIC_" .. key, key, ns.db,
+    local setting = Settings.RegisterAddOnSetting(category, "TIC_" .. key, key, ns.db,
         "boolean", label, ns.DEFAULTS[key])
     setting:SetValueChangedCallback(function() ns.Display:RefreshAll() end)
     Settings.CreateCheckbox(category, setting, tooltip)
@@ -22,7 +22,7 @@ function Options:Init()
     AddCheckbox("nameplates", L.OPT_NAMEPLATES, L.OPT_NAMEPLATES_TT)
     AddCheckbox("targetFrame", L.OPT_TARGET, L.OPT_TARGET_TT)
 
-    local size = Settings.RegisterAddOnSetting(category, "ITIC_iconSize", "iconSize", ns.db,
+    local size = Settings.RegisterAddOnSetting(category, "TIC_iconSize", "iconSize", ns.db,
         "number", L.OPT_ICON_SIZE, ns.DEFAULTS.iconSize)
     size:SetValueChangedCallback(function() ns.Display:ApplySize() end)
     local sliderOptions = Settings.CreateSliderOptions(12, 40, 1)

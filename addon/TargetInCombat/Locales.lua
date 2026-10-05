@@ -2,8 +2,8 @@ local _, ns = ...
 
 -- English is the base table; other locales only override what they translate.
 local L = {
-    TITLE = "Is Target In Combat",
-    LOADED = "loaded. Type /itic for options.",
+    TITLE = "Target In Combat",
+    LOADED = "loaded. Type /tic for options.",
 
     OPT_DISPLAY = "Display",
     OPT_NAMEPLATES = "Show on nameplates",
@@ -27,7 +27,7 @@ local L = {
 
 local locales = {
     frFR = {
-        LOADED = "chargé. Tapez /itic pour les options.",
+        LOADED = "chargé. Tapez /tic pour les options.",
 
         OPT_DISPLAY = "Affichage",
         OPT_NAMEPLATES = "Afficher sur les barres de nom",

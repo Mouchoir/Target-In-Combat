@@ -1,4 +1,4 @@
-# Is Target In Combat - ITIC
+# Target In Combat - TIC
 
 A WoW Forever addon that shows whether a unit is in combat, on nameplates and next to the target portrait. Rogues can switch to a Sap mode that tells at a glance who can be sapped.
 
@@ -23,7 +23,7 @@ Range comes from the game's own Sap range check, so any range bonus is taken int
 
 ## Options
 
-`/itic` opens the panel in Options > AddOns.
+`/tic` opens the panel in Options > AddOns.
 
 ## Development
 

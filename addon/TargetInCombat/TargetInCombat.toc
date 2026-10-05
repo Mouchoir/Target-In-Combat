@@ -1,0 +1,15 @@
+## Interface: 16001
+## Title: Target In Combat - TIC
+## Notes: Shows on nameplates and next to the target portrait whether a unit is in combat. Rogues can switch to a Sap mode: sappable, in range, not shapeshifted. /tic
+## Title-frFR: Target In Combat - TIC
+## Notes-frFR: Indique sur les barres de nom et à côté du portrait de la cible si une unité est en combat. Les voleurs peuvent passer en mode Assommer : assommable, à portée, pas en forme. /tic
+## Author: Mouchoir
+## Version: 0.1.0
+## SavedVariables: TargetInCombatDB
+## IconTexture: Interface\Icons\Ability_Sap
+
+Locales.lua
+Core.lua
+Rules.lua
+Display.lua
+Options.lua
