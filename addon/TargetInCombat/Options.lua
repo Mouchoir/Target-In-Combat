@@ -37,6 +37,9 @@ function Options:Init()
     angleOptions:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right)
     Settings.CreateSlider(category, angle, angleOptions, L.OPT_TARGET_ANGLE_TT)
 
+    AddCheckbox("roundTarget", L.OPT_ROUND_TARGET, L.OPT_ROUND_TT)
+    AddCheckbox("roundPlates", L.OPT_ROUND_PLATES, L.OPT_ROUND_TT)
+
     layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L.OPT_UNITS))
     AddCheckbox("enemyPlayers", L.OPT_ENEMY_PLAYERS)
     AddCheckbox("enemyNPCs", L.OPT_ENEMY_NPCS)

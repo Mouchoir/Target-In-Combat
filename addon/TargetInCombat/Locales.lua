@@ -16,6 +16,10 @@ local L = {
     OPT_TARGET_ANGLE = "Position around the target portrait",
     OPT_TARGET_ANGLE_TT = "Moves the icon around the round portrait. 0 is the top, 90 the right, 180 the bottom, 270 the left.",
 
+    OPT_ROUND_TARGET = "Rounded corners on the target portrait icon",
+    OPT_ROUND_PLATES = "Rounded corners on nameplate icons",
+    OPT_ROUND_TT = "Rounds the corners of the Sap icon and its timer, like the aura icons on nameplates.",
+
     OPT_UNITS = "Units",
     OPT_ENEMY_PLAYERS = "Enemy players",
     OPT_ENEMY_NPCS = "Enemy NPCs",
@@ -43,6 +47,10 @@ local locales = {
         OPT_ICON_SIZE = "Taille de l'icône",
         OPT_TARGET_ANGLE = "Position autour du portrait de la cible",
         OPT_TARGET_ANGLE_TT = "Fait tourner l'icône autour du portrait rond. 0 en haut, 90 à droite, 180 en bas, 270 à gauche.",
+
+        OPT_ROUND_TARGET = "Coins arrondis sur l'icône du portrait de la cible",
+        OPT_ROUND_PLATES = "Coins arrondis sur les icônes des barres de nom",
+        OPT_ROUND_TT = "Arrondit les coins de l'icône d'Assommer et de son minuteur, comme les icônes d'auras des barres de nom.",
 
         OPT_UNITS = "Unités",
         OPT_ENEMY_PLAYERS = "Joueurs ennemis",

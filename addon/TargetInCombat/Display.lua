@@ -8,17 +8,25 @@ local STATE = ns.Rules.STATE
 local COMBAT_ATLAS = "UI-HUD-UnitFrame-Player-CombatIcon"
 local SAP_ICON = "Interface\\Icons\\Ability_Sap"
 local CROSS_ATLAS = "UI-LFG-DeclineMark" -- the red X of the ready check
+-- Rounded corners, as on Blizzard's nameplate aura icons.
+local ROUND_MASK_ATLAS = "UI-HUD-CoolDownManager-Mask"
+local ROUND_SWIPE = "Interface\\HUD\\UI-HUD-CoolDownManager-Icon-Swipe"
+local SQUARE_SWIPE = "Interface\\Buttons\\WHITE8X8"
 local REST_ATLAS = "UI-HUD-UnitFrame-Player-Rest-Flipbook" -- the player frame's Zzz, 7x6 frames
 
 local plateIcons = {}   -- unit token -> icon frame
 local pool = {}         -- released nameplate icons
 local targetIcon
 
-local function CreateIcon(parent)
+local function CreateIcon(parent, kind)
     local icon = CreateFrame("Frame", nil, parent)
+    icon.kind = kind -- "plate" or "target", each has its own rounded option
     icon:SetFrameStrata("HIGH")
     icon.tex = icon:CreateTexture(nil, "OVERLAY")
     icon.tex:SetAllPoints()
+    icon.mask = icon:CreateMaskTexture()
+    icon.mask:SetAtlas(ROUND_MASK_ATLAS)
+    icon.mask:SetAllPoints()
     icon.cross = icon:CreateTexture(nil, "OVERLAY", nil, 7)
     icon.cross:SetAtlas(CROSS_ATLAS)
     icon.cross:SetAllPoints()
@@ -47,8 +55,25 @@ local function CreateIcon(parent)
     icon.timer:SetPoint("CENTER", 0, 0)
     icon.timer:SetTextColor(1, 0.9, 0.2)
 
+    icon.rounded = false
+    icon.cd:SetSwipeTexture(SQUARE_SWIPE)
+    icon.cd:SetSwipeColor(0, 0, 0, 0.6)
+
     icon:Hide()
     return icon
+end
+
+local function ApplyShape(icon)
+    local rounded = icon.kind == "plate" and ns.db.roundPlates or ns.db.roundTarget
+    if rounded == icon.rounded then return end
+    icon.rounded = rounded
+    if rounded then
+        icon.tex:AddMaskTexture(icon.mask)
+    else
+        icon.tex:RemoveMaskTexture(icon.mask)
+    end
+    icon.cd:SetSwipeTexture(rounded and ROUND_SWIPE or SQUARE_SWIPE)
+    icon.cd:SetSwipeColor(0, 0, 0, 0.6)
 end
 
 local function ShowSapTimer(icon, expires, duration)
@@ -70,6 +95,7 @@ local function ShowSapTimer(icon, expires, duration)
 end
 
 local function Apply(icon, state, expires, duration)
+    ApplyShape(icon)
     ShowSapTimer(icon, state ~= STATE.NONE and expires or nil, duration)
     if state == STATE.NONE then
         icon:Hide()
@@ -168,7 +194,7 @@ function Display:Init()
     local container = TargetFrame and TargetFrame.TargetFrameContainer
     targetPortrait = container and container.Portrait
     if targetPortrait then
-        targetIcon = CreateIcon(TargetFrame)
+        targetIcon = CreateIcon(TargetFrame, "target")
         self:ApplyTargetPosition()
     end
     self:ApplySize()
@@ -200,7 +226,7 @@ end
 function Display:AddNamePlate(unit)
     local plate = C_NamePlate.GetNamePlateForUnit(unit)
     if not plate then return end -- forbidden plates are out of reach
-    local icon = plateIcons[unit] or table.remove(pool) or CreateIcon(plate)
+    local icon = plateIcons[unit] or table.remove(pool) or CreateIcon(plate, "plate")
     icon:SetParent(plate)
     icon:SetFrameStrata("HIGH")
     Resize(icon, ns.db.iconSize)

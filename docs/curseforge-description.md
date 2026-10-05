@@ -22,12 +22,28 @@ On hostile units out of combat, the icon becomes the Sap icon:
 
 Range uses the game's own Sap range check, so range bonuses are included. No guessed distance countdown: the game does not give the exact distance to an enemy, and an approximate number would mislead.
 
+## Screenshots
+
+| | Nameplate | Target portrait |
+|---|---|---|
+| In combat | ![](https://raw.githubusercontent.com/Mouchoir/Target-In-Combat/main/docs/screenshots/combat-plate.png) | ![](https://raw.githubusercontent.com/Mouchoir/Target-In-Combat/main/docs/screenshots/combat-target.png) |
+| Out of combat (optional Zzz) | ![](https://raw.githubusercontent.com/Mouchoir/Target-In-Combat/main/docs/screenshots/zzz-plate.png) | ![](https://raw.githubusercontent.com/Mouchoir/Target-In-Combat/main/docs/screenshots/zzz-target.png) |
+| Sap ready: humanoid, in range, stealthed | ![](https://raw.githubusercontent.com/Mouchoir/Target-In-Combat/main/docs/screenshots/sap-ready-plate.png) | ![](https://raw.githubusercontent.com/Mouchoir/Target-In-Combat/main/docs/screenshots/sap-ready-target.png) |
+| Sappable, but out of range | ![](https://raw.githubusercontent.com/Mouchoir/Target-In-Combat/main/docs/screenshots/sap-far-player-plate.png) | ![](https://raw.githubusercontent.com/Mouchoir/Target-In-Combat/main/docs/screenshots/sap-far-player-target.png) |
+| Not sappable: beast | ![](https://raw.githubusercontent.com/Mouchoir/Target-In-Combat/main/docs/screenshots/sap-no-beast-plate.png) | ![](https://raw.githubusercontent.com/Mouchoir/Target-In-Combat/main/docs/screenshots/sap-no-beast-target.png) |
+| Not sappable: player in cat form | ![](https://raw.githubusercontent.com/Mouchoir/Target-In-Combat/main/docs/screenshots/sap-no-druid-form-plate.png) | ![](https://raw.githubusercontent.com/Mouchoir/Target-In-Combat/main/docs/screenshots/sap-no-druid-form-target.png) |
+
+Sap timer, seconds left on your Sap:
+
+![](https://raw.githubusercontent.com/Mouchoir/Target-In-Combat/main/docs/screenshots/sap-timer-plate.png)
+
 ## Options
 
 Type **/tic** (Options > AddOns):
 
 - Nameplates and target portrait on/off
 - Icon size, and a slider to place it anywhere around the target portrait
+- Rounded corners, separately for the target portrait and the nameplates
 - "Show when targeting yourself" to see the icon while you set it up
 - Unit filters, out-of-combat Zzz
 - Sap mode on/off

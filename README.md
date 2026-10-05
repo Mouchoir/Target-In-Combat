@@ -4,6 +4,21 @@ A WoW Forever addon that shows whether a unit is in combat, on nameplates and on
 
 Built for world PvP: an enemy out of combat can mount, drink, stealth or resurrect. An enemy in combat cannot.
 
+## Screenshots
+
+| | Nameplate | Target portrait |
+|---|---|---|
+| In combat | ![](docs/screenshots/combat-plate.png) | ![](docs/screenshots/combat-target.png) |
+| Out of combat (optional Zzz) | ![](docs/screenshots/zzz-plate.png) | ![](docs/screenshots/zzz-target.png) |
+| Sap ready: humanoid, in range, stealthed | ![](docs/screenshots/sap-ready-plate.png) | ![](docs/screenshots/sap-ready-target.png) |
+| Sappable, but out of range | ![](docs/screenshots/sap-far-player-plate.png) | ![](docs/screenshots/sap-far-player-target.png) |
+| Not sappable: beast | ![](docs/screenshots/sap-no-beast-plate.png) | ![](docs/screenshots/sap-no-beast-target.png) |
+| Not sappable: player in cat form | ![](docs/screenshots/sap-no-druid-form-plate.png) | ![](docs/screenshots/sap-no-druid-form-target.png) |
+
+Sap timer, seconds left on your Sap:
+
+![](docs/screenshots/sap-timer-plate.png)
+
 ## Combat mode (every class)
 
 | Icon | Meaning |
@@ -37,6 +52,7 @@ Range comes from the game's own Sap range check, so any range bonus is taken int
 - Show on nameplates, show on the target portrait
 - Show when targeting yourself, to see the icon while you set it up
 - Icon size, position around the target portrait
+- Rounded corners, separately for the target portrait and the nameplates
 - Unit filters and the out-of-combat Zzz
 - Sap mode (rogues only)
 
