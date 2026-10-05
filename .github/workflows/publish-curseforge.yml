@@ -26,7 +26,7 @@ env:
   ADDON_NAME: TargetInCombat
   ADDON_SOURCE: addon/TargetInCombat
   CURSEFORGE_BASE_URL: https://wow.curseforge.com
-  CURSEFORGE_PROJECT_ID: "REPLACE_WITH_PROJECT_ID"
+  CURSEFORGE_PROJECT_ID: "1729262"
   # WoW Forever only: interface 16001 -> CurseForge game version 1.60.1.
   PUBLISH_TOCS: TargetInCombat.toc
 
