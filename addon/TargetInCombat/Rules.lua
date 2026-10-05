@@ -132,8 +132,11 @@ end
 -- Whether this unit should get an icon at all, based on the unit filters.
 -- The target frame shows every target; nameplates follow the filters.
 function Rules:Wanted(unit, onNamePlate)
-    if not UnitExists(unit) or UnitIsDeadOrGhost(unit) or UnitIsUnit(unit, "player") then
+    if not UnitExists(unit) or UnitIsDeadOrGhost(unit) then
         return false
+    end
+    if UnitIsUnit(unit, "player") then
+        return not onNamePlate and ns.db.selfTarget
     end
     if not onNamePlate then return true end
     local db = ns.db
@@ -151,6 +154,9 @@ function Rules:GetState(unit, onNamePlate)
     local inCombat = UnitAffectingCombat(unit)
     if IsSecret(inCombat) then return STATE.NONE end
     if inCombat then return STATE.COMBAT end
+
+    -- Targeting yourself is for setting the icon up: always show something.
+    if UnitIsUnit(unit, "player") then return STATE.PEACE end
 
     if self:SapModeActive() and UnitCanAttack("player", unit) then
         local expires, duration = FindMySap(unit)

@@ -4,6 +4,7 @@ local L = ns.L
 local DEFAULTS = {
     nameplates = true,
     targetFrame = true,
+    selfTarget = false,
     iconSize = 20,
     targetAngle = 315,
     enemyPlayers = true,

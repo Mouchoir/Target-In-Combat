@@ -21,6 +21,7 @@ function Options:Init()
     layout:AddInitializer(CreateSettingsListSectionHeaderInitializer(L.OPT_DISPLAY))
     AddCheckbox("nameplates", L.OPT_NAMEPLATES, L.OPT_NAMEPLATES_TT)
     AddCheckbox("targetFrame", L.OPT_TARGET, L.OPT_TARGET_TT)
+    AddCheckbox("selfTarget", L.OPT_SELF, L.OPT_SELF_TT)
 
     local size = Settings.RegisterAddOnSetting(category, "TIC_iconSize", "iconSize", ns.db,
         "number", L.OPT_ICON_SIZE, ns.DEFAULTS.iconSize)
