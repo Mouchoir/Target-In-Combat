@@ -7,6 +7,7 @@ ns.Display = Display
 local STATE = ns.Rules.STATE
 local COMBAT_ATLAS = "UI-HUD-UnitFrame-Player-CombatIcon"
 local SAP_ICON = "Interface\\Icons\\Ability_Sap"
+local CROSS_ATLAS = "UI-LFG-DeclineMark" -- the red X of the ready check
 
 local plateIcons = {}   -- unit token -> icon frame
 local pool = {}         -- released nameplate icons
@@ -17,6 +18,10 @@ local function CreateIcon(parent)
     icon:SetFrameStrata("HIGH")
     icon.tex = icon:CreateTexture(nil, "OVERLAY")
     icon.tex:SetAllPoints()
+    icon.cross = icon:CreateTexture(nil, "OVERLAY", nil, 7)
+    icon.cross:SetAtlas(CROSS_ATLAS)
+    icon.cross:SetAllPoints()
+    icon.cross:Hide()
     icon:Hide()
     return icon
 end
@@ -28,6 +33,7 @@ local function Apply(icon, state)
     end
 
     local tex = icon.tex
+    icon.cross:SetShown(state == STATE.SAP_NO)
     if state == STATE.COMBAT or state == STATE.PEACE then
         -- The atlas is silver: tint it red in combat so it never reads as "greyed out".
         tex:SetAtlas(COMBAT_ATLAS)
@@ -51,10 +57,10 @@ local function Apply(icon, state)
             tex:SetDesaturated(true)
             tex:SetVertexColor(0.8, 0.8, 0.8)
             icon:SetAlpha(0.8)
-        else -- SAP_NO
+        else -- SAP_NO: grey Sap under a red X, never mistaken for "too far"
             tex:SetDesaturated(true)
-            tex:SetVertexColor(1, 0.25, 0.25)
-            icon:SetAlpha(0.9)
+            tex:SetVertexColor(0.6, 0.6, 0.6)
+            icon:SetAlpha(1)
         end
     end
     icon:Show()

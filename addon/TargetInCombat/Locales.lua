@@ -23,7 +23,7 @@ local L = {
 
     OPT_ROGUE = "Rogue",
     OPT_SAP = "Sap mode",
-    OPT_SAP_TT = "On hostile units out of combat, replaces the combat icon with the Sap icon:\n|cff40ff40colored|r: you can Sap it now\n|cff999999grey|r: sappable, but out of range or you are not stealthed\n|cffff4040red|r: cannot be sapped (not humanoid, shapeshifted or immune)",
+    OPT_SAP_TT = "On hostile units out of combat, replaces the combat icon with the Sap icon:\n|cff40ff40colored|r: you can Sap it now\n|cff999999grey|r: sappable, but out of range or you are not stealthed\n|cffff4040red X|r: cannot be sapped (not humanoid, shapeshifted or immune)",
     OPT_SAP_NOT_ROGUE = "Only used on a rogue who knows Sap.",
 }
 
@@ -49,7 +49,7 @@ local locales = {
 
         OPT_ROGUE = "Voleur",
         OPT_SAP = "Mode Assommer",
-        OPT_SAP_TT = "Sur les unités hostiles hors combat, remplace l'icône de combat par celle d'Assommer :\n|cff40ff40en couleur|r : vous pouvez l'assommer maintenant\n|cff999999grise|r : assommable, mais hors de portée ou vous n'êtes pas camouflé\n|cffff4040rouge|r : impossible à assommer (pas humanoïde, en forme ou insensible)",
+        OPT_SAP_TT = "Sur les unités hostiles hors combat, remplace l'icône de combat par celle d'Assommer :\n|cff40ff40en couleur|r : vous pouvez l'assommer maintenant\n|cff999999grise|r : assommable, mais hors de portée ou vous n'êtes pas camouflé\n|cffff4040X rouge|r : impossible à assommer (pas humanoïde, en forme ou insensible)",
         OPT_SAP_NOT_ROGUE = "Ne sert qu'à un voleur qui connaît Assommer.",
     },
 }

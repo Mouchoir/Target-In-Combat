@@ -17,7 +17,7 @@ On hostile units out of combat, the combat icon becomes the Sap icon:
 |---|---|
 | Colored | Sap lands right now: humanoid, in range, you are stealthed |
 | Grey | Sappable, but out of range or you are not stealthed |
-| Red | Cannot be sapped: not humanoid, shapeshifted (druid forms, Ghost Wolf) or immune (Divine Shield, Ice Block, Blessing of Protection) |
+| Grey with a red X | Cannot be sapped: not humanoid, shapeshifted (druid forms, Ghost Wolf) or immune (Divine Shield, Ice Block, Blessing of Protection) |
 
 Range comes from the game's own Sap range check, so any range bonus is taken into account.
 
