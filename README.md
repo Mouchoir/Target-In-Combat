@@ -25,7 +25,7 @@ Sap timer, seconds left on your Sap:
 |---|---|
 | Red crossed swords | In combat |
 | Nothing | Out of combat |
-| Zzz (optional) | Out of combat, when "Also show units out of combat" is on |
+| Zzz or grey swords (optional) | Out of combat, when "Out of combat icon" is set to one of them |
 
 - On the left of each nameplate. On friendly players shown as a name only, next to the name.
 - On the ring of the target portrait. A slider moves it anywhere around the portrait.
@@ -50,11 +50,12 @@ Range comes from the game's own Sap range check, so any range bonus is taken int
 `/tic` opens the panel in Options > AddOns:
 
 - Show on nameplates, show on the target portrait
-- Show when targeting yourself, to see the icon while you set it up
+- Show when targeting yourself
 - Icon size, position around the target portrait
-- Rounded corners, separately for the target portrait and the nameplates
-- Unit filters and the out-of-combat Zzz
+- Corner rounding from 0% (square) to 100% (circle), separately for the target portrait and the nameplates
+- Unit filters, and the out-of-combat icon: nothing, Zzz or grey swords
 - Sap mode (rogues only)
+- Simulation: preview any look on your current target only (in or out of combat; not sappable, sappable, or sapped with a looping timer). Never saved, so it is off again after a /reload.
 
 ## Limits
 

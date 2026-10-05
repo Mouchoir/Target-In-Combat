@@ -8,9 +8,8 @@ local STATE = ns.Rules.STATE
 local COMBAT_ATLAS = "UI-HUD-UnitFrame-Player-CombatIcon"
 local SAP_ICON = "Interface\\Icons\\Ability_Sap"
 local CROSS_ATLAS = "UI-LFG-DeclineMark" -- the red X of the ready check
--- Rounded corners, as on Blizzard's nameplate aura icons.
-local ROUND_MASK_ATLAS = "UI-HUD-CoolDownManager-Mask"
-local ROUND_SWIPE = "Interface\\HUD\\UI-HUD-CoolDownManager-Icon-Swipe"
+-- Corner rounding masks shipped with the addon, Round10 .. Round100 (100 = circle).
+local ROUND_MASK = "Interface\\AddOns\\TargetInCombat\\Media\\Round%d"
 local SQUARE_SWIPE = "Interface\\Buttons\\WHITE8X8"
 local REST_ATLAS = "UI-HUD-UnitFrame-Player-Rest-Flipbook" -- the player frame's Zzz, 7x6 frames
 
@@ -25,7 +24,6 @@ local function CreateIcon(parent, kind)
     icon.tex = icon:CreateTexture(nil, "OVERLAY")
     icon.tex:SetAllPoints()
     icon.mask = icon:CreateMaskTexture()
-    icon.mask:SetAtlas(ROUND_MASK_ATLAS)
     icon.mask:SetAllPoints()
     icon.cross = icon:CreateTexture(nil, "OVERLAY", nil, 7)
     icon.cross:SetAtlas(CROSS_ATLAS)
@@ -55,7 +53,7 @@ local function CreateIcon(parent, kind)
     icon.timer:SetPoint("CENTER", 0, 0)
     icon.timer:SetTextColor(1, 0.9, 0.2)
 
-    icon.rounded = false
+    icon.corner = 0
     icon.cd:SetSwipeTexture(SQUARE_SWIPE)
     icon.cd:SetSwipeColor(0, 0, 0, 0.6)
 
@@ -64,15 +62,19 @@ local function CreateIcon(parent, kind)
 end
 
 local function ApplyShape(icon)
-    local rounded = icon.kind == "plate" and ns.db.roundPlates or ns.db.roundTarget
-    if rounded == icon.rounded then return end
-    icon.rounded = rounded
-    if rounded then
+    local corner = icon.kind == "plate" and ns.db.cornerPlates or ns.db.cornerTarget
+    corner = math.floor((corner or 0) / 10 + 0.5) * 10
+    if corner == icon.corner then return end
+    if icon.corner > 0 then icon.tex:RemoveMaskTexture(icon.mask) end
+    icon.corner = corner
+    if corner > 0 then
+        local path = ROUND_MASK:format(corner)
+        icon.mask:SetTexture(path, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
         icon.tex:AddMaskTexture(icon.mask)
+        icon.cd:SetSwipeTexture(path)
     else
-        icon.tex:RemoveMaskTexture(icon.mask)
+        icon.cd:SetSwipeTexture(SQUARE_SWIPE)
     end
-    icon.cd:SetSwipeTexture(rounded and ROUND_SWIPE or SQUARE_SWIPE)
     icon.cd:SetSwipeColor(0, 0, 0, 0.6)
 end
 
@@ -103,7 +105,8 @@ local function Apply(icon, state, expires, duration)
     end
 
     local tex = icon.tex
-    local resting = state == STATE.PEACE
+    -- Out of combat shows either the animated Zzz or grey swords, per the option.
+    local resting = state == STATE.PEACE and ns.db.outOfCombatIcon ~= 2
     icon.cross:SetShown(state == STATE.SAP_NO)
     icon.zzz:SetShown(resting)
     tex:SetShown(not resting)
@@ -115,13 +118,18 @@ local function Apply(icon, state, expires, duration)
 
     if resting then
         icon:SetAlpha(1)
-    elseif state == STATE.COMBAT then
-        -- The atlas is silver: tint it red so it never reads as "greyed out".
+    elseif state == STATE.COMBAT or state == STATE.PEACE then
+        -- The atlas is silver: tint it red in combat, leave it grey out of combat.
         tex:SetAtlas(COMBAT_ATLAS)
         tex:SetTexCoord(0, 1, 0, 1)
         tex:SetDesaturated(true)
-        tex:SetVertexColor(1, 0.15, 0.15)
-        icon:SetAlpha(1)
+        if state == STATE.COMBAT then
+            tex:SetVertexColor(1, 0.15, 0.15)
+            icon:SetAlpha(1)
+        else
+            tex:SetVertexColor(0.8, 0.8, 0.8)
+            icon:SetAlpha(0.6)
+        end
     else
         tex:SetTexture(SAP_ICON)
         tex:SetTexCoord(0.08, 0.92, 0.08, 0.92)

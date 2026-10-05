@@ -147,8 +147,26 @@ function Rules:Wanted(unit, onNamePlate)
     return db.friendly
 end
 
+local SIM_SAP_DURATION = 10 -- the simulated Sap timer loops on this many seconds
+
+-- What the simulation panel asks for, shown on the current target only.
+local function SimulatedState()
+    local sim = ns.sim
+    if sim.combat == 1 then return STATE.COMBAT end
+    if sim.sap == 1 then return STATE.SAP_NO end
+    if sim.sap == 2 then return STATE.SAP_READY end
+    if sim.sap == 3 then
+        local start = math.floor(GetTime() / SIM_SAP_DURATION) * SIM_SAP_DURATION
+        return STATE.SAP_READY, start + SIM_SAP_DURATION, SIM_SAP_DURATION
+    end
+    return ns.db.outOfCombatIcon > 0 and STATE.PEACE or STATE.NONE
+end
+
 -- Returns the state, plus the expiration time and duration of our Sap on the unit if any.
 function Rules:GetState(unit, onNamePlate)
+    if ns.sim.enabled and UnitExists(unit) and UnitIsUnit(unit, "target") then
+        return SimulatedState()
+    end
     if not self:Wanted(unit, onNamePlate) then return STATE.NONE end
 
     local inCombat = UnitAffectingCombat(unit)
@@ -171,5 +189,5 @@ function Rules:GetState(unit, onNamePlate)
         -- Unknown (secret): fall back to plain combat display.
     end
 
-    return ns.db.outOfCombat and STATE.PEACE or STATE.NONE
+    return ns.db.outOfCombatIcon > 0 and STATE.PEACE or STATE.NONE
 end

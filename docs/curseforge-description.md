@@ -7,7 +7,7 @@ Built for world PvP: an enemy out of combat can mount, drink, stealth or resurre
 ## For every class
 
 - **Red crossed swords**: the unit is in combat.
-- **Nothing**: out of combat. Or turn on the optional **Zzz** to see it explicitly.
+- **Nothing**: out of combat. Or pick a **Zzz** or **grey swords** to see it explicitly.
 - Shown on the left of each nameplate (next to the name for friendly players shown as a name only) and on the ring of the target portrait.
 - Filters: enemy players (on by default), enemy NPCs, friendly units.
 
@@ -43,9 +43,10 @@ Type **/tic** (Options > AddOns):
 
 - Nameplates and target portrait on/off
 - Icon size, and a slider to place it anywhere around the target portrait
-- Rounded corners, separately for the target portrait and the nameplates
-- "Show when targeting yourself" to see the icon while you set it up
-- Unit filters, out-of-combat Zzz
+- Corner rounding from square to full circle, separately for the target portrait and the nameplates
+- "Show when targeting yourself"
+- Unit filters, out-of-combat icon (nothing, Zzz or grey swords)
+- **Simulation**: preview every look on your current target only, the Sap timer included, while you set things up
 - Sap mode on/off
 
 ## Languages

@@ -7,16 +7,24 @@ local DEFAULTS = {
     selfTarget = false,
     iconSize = 20,
     targetAngle = 315,
-    roundTarget = false,
-    roundPlates = false,
+    cornerTarget = 0,
+    cornerPlates = 0,
     enemyPlayers = true,
     enemyNPCs = false,
     friendly = false,
-    outOfCombat = false,
+    outOfCombatIcon = 0, -- 0 nothing, 1 Zzz, 2 grey swords
     sapMode = true,
 }
 
 ns.DEFAULTS = DEFAULTS
+
+-- Preview of every look on the current target only. Never saved, so a forgotten
+-- simulation is gone after the next /reload.
+ns.sim = {
+    enabled = false,
+    combat = 0, -- 0 out of combat, 1 in combat
+    sap = 0,    -- 0 no Sap icon, 1 not sappable, 2 sappable, 3 sapped (looping timer)
+}
 
 -- Refresh rate for range and combat state. Range has no event, so we poll.
 local TICK = 0.2
@@ -25,6 +33,13 @@ local function LoadDB()
     if type(TargetInCombatDB) ~= "table" then
         TargetInCombatDB = {}
     end
+    -- 0.2.0 had a plain on/off for the out-of-combat icon (always the Zzz).
+    local db = TargetInCombatDB
+    if db.outOfCombatIcon == nil and db.outOfCombat ~= nil then
+        db.outOfCombatIcon = db.outOfCombat and 1 or 0
+    end
+    db.outOfCombat, db.roundTarget, db.roundPlates = nil, nil, nil
+
     for key, value in pairs(DEFAULTS) do
         if TargetInCombatDB[key] == nil then
             TargetInCombatDB[key] = value
