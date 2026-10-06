@@ -54,8 +54,7 @@ local function CreateIcon(parent, kind)
     icon.timer:SetTextColor(1, 0.9, 0.2)
 
     icon.corner = 0
-    icon.cd:SetSwipeTexture(SQUARE_SWIPE)
-    icon.cd:SetSwipeColor(0, 0, 0, 0.6)
+    icon.cd:SetSwipeTexture(SQUARE_SWIPE, 0, 0, 0, 0.6)
 
     icon:Hide()
     return icon
@@ -71,9 +70,9 @@ local function ApplyShape(icon)
         local path = ROUND_MASK:format(corner)
         icon.mask:SetTexture(path, "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE")
         icon.tex:AddMaskTexture(icon.mask)
-        icon.cd:SetSwipeTexture(path)
+        icon.cd:SetSwipeTexture(path, 0, 0, 0, 0.6)
     else
-        icon.cd:SetSwipeTexture(SQUARE_SWIPE)
+        icon.cd:SetSwipeTexture(SQUARE_SWIPE, 0, 0, 0, 0.6)
     end
     icon.cd:SetSwipeColor(0, 0, 0, 0.6)
 end

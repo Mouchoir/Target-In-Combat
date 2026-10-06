@@ -69,6 +69,7 @@ WoW Forever runs on the modern client, which hides some data from addons:
 ## Development
 
 - `luacheck addon` to lint.
+- API check: open the repo in VS Code with Ketho's [WoW API](https://marketplace.visualstudio.com/items?itemName=ketho.wow-api) extension, which adds the WoW annotations to the Lua language server (`.luarc.json` holds the project settings).
 - `scripts\dev.ps1` (or `dev.cmd`) copies the addon into the game. The AddOns path goes in a gitignored `scripts\dev.local.ps1` setting `$WowAddOnsPaths`.
 - Publishing a GitHub Release uploads the zip to CurseForge (`.github/workflows/publish-curseforge.yml`, secret `CURSEFORGE_API_TOKEN`). A plain push does not publish.
 
