@@ -29,7 +29,7 @@ Sap timer, seconds left on your Sap:
 | Nothing | Out of combat |
 | Zzz or grey swords (optional) | Out of combat, when "Out of combat icon" is set to one of them |
 
-- On the left of each nameplate. On friendly players shown as a name only, next to the name.
+- On each nameplate: left of the bar (moved past the raid marker if there is one) or right of the level badge, your choice. On friendly players shown as a name only, next to the name.
 - On the ring of the target portrait. A slider moves it anywhere around the portrait.
 - Filters: enemy players (on by default), enemy NPCs, friendly units.
 

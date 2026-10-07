@@ -95,6 +95,16 @@ function Options:Init()
     angleOptions:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right)
     Settings.CreateSlider(category, angle, angleOptions, L.OPT_TARGET_ANGLE_TT)
 
+    local side = Settings.RegisterAddOnSetting(category, "TIC_platesSide", "platesSide",
+        ns.db, "number", L.OPT_SIDE, ns.DEFAULTS.platesSide)
+    side:SetValueChangedCallback(Refresh)
+    Settings.CreateDropdown(category, side, function()
+        local c = Settings.CreateControlTextContainer()
+        c:Add(0, L.SIDE_LEFT)
+        c:Add(1, L.SIDE_RIGHT)
+        return c:GetData()
+    end, L.OPT_SIDE_TT)
+
     AddCornerSlider("cornerTarget", L.OPT_CORNER_TARGET)
     AddCornerSlider("cornerPlates", L.OPT_CORNER_PLATES)
 

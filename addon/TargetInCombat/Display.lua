@@ -149,30 +149,49 @@ local function Apply(icon, state, expires, duration)
     icon:Show()
 end
 
--- Left of the health bar (Forever puts the level badge on the right). Friendly players
--- can be shown as a name only: the bar is hidden then, so sit left of the name text.
+-- Nameplate spot, per the "Nameplate icon side" option:
+--  left:  left of the health bar, or left of the raid marker when there is one
+--         (Forever puts the raid marker exactly where our icon would sit);
+--  right: right of the level badge, or right of the bar when no badge is shown.
+-- Friendly players can be shown as a name only: the bar is hidden then, so sit
+-- left of the name text (the raid marker goes above the name in that mode).
+local function Shown(frame)
+    return frame and frame:IsShown() and frame
+end
+
 local function AnchorPlateIcon(icon)
     local plate = icon.plate
     local uf = plate.UnitFrame
+    local right = ns.db.platesSide == 1
     local mode, anchor
     if uf and uf.IsShowOnlyName and uf:IsShowOnlyName() and uf.name then
         mode, anchor = "name", uf.name
     elseif uf and uf.HealthBarsContainer and uf.HealthBarsContainer.healthBar then
-        mode, anchor = "bar", uf.HealthBarsContainer.healthBar
+        if right then
+            local level = Shown(uf.PlayerLevelDiffFrame)
+            mode, anchor = "right", level or uf.HealthBarsContainer.healthBar
+        else
+            local raid = Shown(uf.RaidTargetFrame)
+            mode, anchor = "left", raid or uf.HealthBarsContainer.healthBar
+        end
     elseif plate.unitFrame and plate.unitFrame.healthBar then -- Plater
-        mode, anchor = "bar", plate.unitFrame.healthBar
+        mode, anchor = right and "right" or "left", plate.unitFrame.healthBar
     else
-        mode, anchor = "plate", plate
+        mode, anchor = "left", plate
     end
 
     -- The name string can be wider than its text, so measure the text itself.
     local offset = mode == "name" and anchor:GetStringWidth() or 0
-    if icon.anchorMode == mode and icon.anchorOffset == offset then return end
-    icon.anchorMode, icon.anchorOffset = mode, offset
+    if icon.anchorMode == mode and icon.anchorTo == anchor and icon.anchorOffset == offset then
+        return
+    end
+    icon.anchorMode, icon.anchorTo, icon.anchorOffset = mode, anchor, offset
 
     icon:ClearAllPoints()
     if mode == "name" then
         icon:SetPoint("RIGHT", anchor, "CENTER", -offset / 2 - 3, 0)
+    elseif mode == "right" then
+        icon:SetPoint("LEFT", anchor, "RIGHT", 3, 0)
     else
         icon:SetPoint("RIGHT", anchor, "LEFT", -3, 0)
     end

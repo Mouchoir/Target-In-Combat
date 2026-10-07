@@ -9,6 +9,7 @@ local DEFAULTS = {
     targetAngle = 315,
     cornerTarget = 0,
     cornerPlates = 0,
+    platesSide = 0, -- 0 left of the bar, 1 right of the level badge
     enemyPlayers = true,
     enemyNPCs = false,
     friendly = false,
@@ -68,6 +69,7 @@ frame:SetScript("OnEvent", function(_, event, arg1)
         frame:RegisterEvent("UNIT_AURA")
         frame:RegisterEvent("UPDATE_STEALTH")
         frame:RegisterEvent("SPELLS_CHANGED")
+        frame:RegisterEvent("RAID_TARGET_UPDATE")
         C_Timer.NewTicker(TICK, function() ns.Display:RefreshAll() end)
         print("|cff40c0ff" .. L.TITLE .. "|r " .. L.LOADED)
     elseif event == "NAME_PLATE_UNIT_ADDED" then

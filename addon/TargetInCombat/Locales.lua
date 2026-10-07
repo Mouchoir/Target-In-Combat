@@ -16,6 +16,10 @@ local L = {
     OPT_TARGET_ANGLE = "Position around the target portrait",
     OPT_TARGET_ANGLE_TT = "Moves the icon around the round portrait. 0 is the top, 90 the right, 180 the bottom, 270 the left.",
 
+    OPT_SIDE = "Nameplate icon side",
+    OPT_SIDE_TT = "Left of the health bar, moved further left when the unit has a raid marker, or right of the level badge.",
+    SIDE_LEFT = "Left",
+    SIDE_RIGHT = "Right",
     OPT_CORNER_TARGET = "Corner rounding, target portrait",
     OPT_CORNER_PLATES = "Corner rounding, nameplates",
     OPT_CORNER_TT = "Rounds the corners of the Sap icon and its timer. 0% is square, 100% is a circle.",
@@ -65,6 +69,10 @@ local locales = {
         OPT_TARGET_ANGLE = "Position autour du portrait de la cible",
         OPT_TARGET_ANGLE_TT = "Fait tourner l'icône autour du portrait rond. 0 en haut, 90 à droite, 180 en bas, 270 à gauche.",
 
+        OPT_SIDE = "Côté de l'icône sur les barres de nom",
+        OPT_SIDE_TT = "À gauche de la barre de vie, décalée plus à gauche quand l'unité a une marque de raid, ou à droite de la pastille de niveau.",
+        SIDE_LEFT = "Gauche",
+        SIDE_RIGHT = "Droite",
         OPT_CORNER_TARGET = "Arrondi des coins, portrait de la cible",
         OPT_CORNER_PLATES = "Arrondi des coins, barres de nom",
         OPT_CORNER_TT = "Arrondit les coins de l'icône d'Assommer et de son minuteur. 0 % = carré, 100 % = cercle.",

@@ -8,7 +8,7 @@ Built for world PvP: an enemy out of combat can mount, drink, stealth or resurre
 
 - **Red crossed swords**: the unit is in combat.
 - **Nothing**: out of combat. Or pick a **Zzz** or **grey swords** to see it explicitly.
-- Shown on the left of each nameplate (next to the name for friendly players shown as a name only) and on the ring of the target portrait.
+- Shown on each nameplate, left of the bar (moved past the raid marker) or right of the level badge, and on the ring of the target portrait.
 - Filters: enemy players (on by default), enemy NPCs, friendly units.
 
 ## For rogues: Sap mode
