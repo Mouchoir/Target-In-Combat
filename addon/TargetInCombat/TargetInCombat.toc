@@ -4,7 +4,7 @@
 ## Title-frFR: Target In Combat - TIC
 ## Notes-frFR: Indique sur les barres de nom et à côté du portrait de la cible si une unité est en combat. Les voleurs peuvent passer en mode Assommer : assommable, à portée, pas en forme. /tic
 ## Author: Mouchoir
-## Version: 0.2.0
+## Version: 1.0.0
 ## SavedVariables: TargetInCombatDB
 ## IconTexture: Interface\Icons\Ability_Sap
 
