@@ -276,7 +276,7 @@ function Display:RefreshUnit(unit)
     if not unit then return end
     local icon = plateIcons[unit]
     if icon then RefreshPlate(unit, icon) end
-    if targetIcon and (unit == "target" or UnitIsUnit(unit, "target")) then
+    if targetIcon and (unit == "target" or ns.Rules.IsSameUnit(unit, "target")) then
         RefreshTarget()
     end
 end

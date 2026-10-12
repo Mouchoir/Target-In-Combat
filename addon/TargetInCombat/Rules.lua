@@ -48,6 +48,20 @@ local function IsSecret(value)
     return issecretvalue ~= nil and issecretvalue(value)
 end
 
+-- UnitIsUnit on an addon-restricted map can refuse the comparison or answer with a
+-- secret, and always does for compound tokens such as "targettarget". An answer we
+-- cannot read counts as two different units.
+function Rules.IsSameUnit(unit1, unit2)
+    if C_Secrets and C_Secrets.CanCompareUnitTokens
+        and not C_Secrets.CanCompareUnitTokens(unit1, unit2) then
+        return false
+    end
+    local ok, same = pcall(UnitIsUnit, unit1, unit2)
+    if not ok or IsSecret(same) then return false end
+    return same
+end
+local IsSameUnit = Rules.IsSameUnit
+
 function Rules:Init()
     local _, class = UnitClass("player")
     isRogue = class == "ROGUE"
@@ -135,7 +149,7 @@ function Rules:Wanted(unit, onNamePlate)
     if not UnitExists(unit) or UnitIsDeadOrGhost(unit) then
         return false
     end
-    if UnitIsUnit(unit, "player") then
+    if IsSameUnit(unit, "player") then
         return not onNamePlate and ns.db.selfTarget
     end
     if not onNamePlate then return true end
@@ -164,7 +178,7 @@ end
 
 -- Returns the state, plus the expiration time and duration of our Sap on the unit if any.
 function Rules:GetState(unit, onNamePlate)
-    if ns.sim.enabled and UnitExists(unit) and UnitIsUnit(unit, "target") then
+    if ns.sim.enabled and UnitExists(unit) and IsSameUnit(unit, "target") then
         return SimulatedState()
     end
     if not self:Wanted(unit, onNamePlate) then return STATE.NONE end
@@ -174,7 +188,7 @@ function Rules:GetState(unit, onNamePlate)
     if inCombat then return STATE.COMBAT end
 
     -- Targeting yourself is for setting the icon up: always show something.
-    if UnitIsUnit(unit, "player") then return STATE.PEACE end
+    if IsSameUnit(unit, "player") then return STATE.PEACE end
 
     if self:SapModeActive() and UnitCanAttack("player", unit) then
         local expires, duration = FindMySap(unit)
