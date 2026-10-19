@@ -12,4 +12,5 @@ Locales.lua
 Core.lua
 Rules.lua
 Display.lua
+About.lua
 Options.lua

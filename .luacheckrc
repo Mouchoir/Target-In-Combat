@@ -5,7 +5,8 @@ unused_args = false       -- WoW callbacks pass self/event args we often ignore
 
 read_globals = {
     -- Lua helpers the game adds
-    "wipe", "print", "issecretvalue",
+    "wipe", "print", "issecretvalue", "GetBuildInfo", "C_AddOns", "GetAddOnInfo",
+    "CLOSE", "StaticPopup_Show", "GameTooltip", "GameTooltip_Hide",
 
     -- Frames, timers, client
     "CreateFrame", "C_Timer", "GetTime", "GetLocale", "TargetFrame", "C_NamePlate", "STANDARD_TEXT_FONT",
@@ -20,5 +21,5 @@ read_globals = {
 
 globals = {
     -- SavedVariable and slash handlers (globals WoW reads/writes)
-    "TargetInCombatDB", "SLASH_TARGETINCOMBAT1", "SlashCmdList",
+    "TargetInCombatDB", "SLASH_TARGETINCOMBAT1", "SlashCmdList", "StaticPopupDialogs",
 }

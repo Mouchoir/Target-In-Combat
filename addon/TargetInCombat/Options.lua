@@ -129,6 +129,7 @@ function Options:Init()
     AddSimulation()
 
     Settings.RegisterAddOnCategory(category)
+    ns.About:Register(category)
 end
 
 function Options:Open()
