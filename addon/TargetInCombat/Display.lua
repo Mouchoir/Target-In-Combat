@@ -159,6 +159,29 @@ local function Shown(frame)
     return frame and frame:IsShown() and frame
 end
 
+-- Questie parks an unnamed child frame (with an .Icon texture) on the left of
+-- the plate for quest NPCs. Find it so our icon can sit beyond it.
+local function QuestieFrame(plate)
+    for i = 1, plate:GetNumChildren() do
+        local child = select(i, plate:GetChildren())
+        if child ~= nil and child.Icon and child.Icon.GetTexture and child:IsShown()
+            and child.Icon:GetTexture() then
+            return child
+        end
+    end
+end
+
+-- Of two candidate anchors, the one further left (the first when positions are unknown).
+local function Leftmost(a, b)
+    if not (a and b) then return a or b end
+    local la, lb = a:GetLeft(), b:GetLeft()
+    if issecretvalue and (issecretvalue(la) or issecretvalue(lb)) then return a end
+    if la and lb and lb < la then
+        return b
+    end
+    return a
+end
+
 local function AnchorPlateIcon(icon)
     local plate = icon.plate
     local uf = plate.UnitFrame
@@ -171,8 +194,8 @@ local function AnchorPlateIcon(icon)
             local level = Shown(uf.PlayerLevelDiffFrame)
             mode, anchor = "right", level or uf.HealthBarsContainer.healthBar
         else
-            local raid = Shown(uf.RaidTargetFrame)
-            mode, anchor = "left", raid or uf.HealthBarsContainer.healthBar
+            local blocker = Leftmost(Shown(uf.RaidTargetFrame), QuestieFrame(plate))
+            mode, anchor = "left", blocker or uf.HealthBarsContainer.healthBar
         end
     elseif plate.unitFrame and plate.unitFrame.healthBar then -- Plater
         mode, anchor = right and "right" or "left", plate.unitFrame.healthBar
