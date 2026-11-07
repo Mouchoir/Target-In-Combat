@@ -5,6 +5,7 @@
 ## Notes-frFR: Indique sur les barres de nom et à côté du portrait de la cible si une unité est en combat. Les voleurs peuvent passer en mode Assommer : assommable, à portée, pas en forme. /tic
 ## Author: Mouchoir
 ## Version: 1.0.2
+## X-Wago-ID: mKOaXWNx
 ## SavedVariables: TargetInCombatDB
 ## IconTexture: Interface\Icons\Ability_Sap
 
